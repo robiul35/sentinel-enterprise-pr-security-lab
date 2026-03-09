@@ -1,0 +1,11 @@
+id: env-disclosure-python
+language: python
+severity: error
+message: |
+  Sensitive environment disclosure in HTTP response.
+  Do not return full environment variables or secret values.
+rule:
+  any:
+    - pattern: 'return {"env": dict(os.environ)}'
+    - pattern: "return dict(os.environ)"
+    - pattern: 'return {"all": json.dumps(dict(os.environ))}'

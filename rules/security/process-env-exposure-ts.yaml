@@ -1,0 +1,10 @@
+id: process-env-exposure-typescript
+language: typescript
+severity: error
+message: |
+  process.env is being serialized or rendered in the client.
+  This can leak sensitive configuration values.
+rule:
+  any:
+    - pattern: JSON.stringify(process.env)
+    - pattern: {...process.env}
