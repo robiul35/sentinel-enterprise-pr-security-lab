@@ -251,6 +251,11 @@ reviews:
   # Extra AI review context per file pattern — layered on top of tool output
   # ═══════════════════════════════════════════════════════════════════════
   path_instructions:
+    - path: "rules/**"
+      instructions: |
+        Internal security rule definitions for scanner behavior.
+        Do not provide code-quality or refactor comments for these files.
+        Only report blocking syntax/parse issues that would prevent rules from loading.
 
     # Next.js Components & Pages
     - path: "frontend/**/*.tsx"
@@ -367,4 +372,8 @@ reviews:
 
 chat:
   auto_reply: true
+
+knowledge_base:
+  path_filters:
+    - "!rules/**"
 
