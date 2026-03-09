@@ -31,3 +31,4 @@ rule:
     import $MODULE
     $$$
     # No usage of $MODULE found in the rest of the file
+

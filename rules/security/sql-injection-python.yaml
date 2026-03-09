@@ -21,3 +21,4 @@ note: |
 
 rule:
   pattern: cursor.execute($QUERY)
+

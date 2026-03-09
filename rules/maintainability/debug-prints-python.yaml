@@ -31,3 +31,4 @@ note: |
 rule:
   pattern: |
     print(f"DEBUG: $MESSAGE")
+

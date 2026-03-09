@@ -22,3 +22,4 @@ rule:
   pattern: |
     for $ITEM in $COLLECTION:
         $RESULT = get_user_posts($ITEM["id"])
+
