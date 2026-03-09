@@ -251,6 +251,11 @@ reviews:
   # Extra AI review context per file pattern — layered on top of tool output
   # ═══════════════════════════════════════════════════════════════════════
   path_instructions:
+    - path: "rules/**"
+      instructions: |
+        Internal security rule definitions for scanner behavior.
+        Do not provide code-quality or refactor comments for these files.
+        Only report blocking syntax/parse issues that would prevent rules from loading.
 
     # Next.js Components & Pages
     - path: "frontend/**/*.tsx"
@@ -258,6 +263,7 @@ reviews:
         Review for React/Next.js best practices and security.
         Flag: missing key props in lists, dangerouslySetInnerHTML without
         DOMPurify sanitization (XSS risk), hardcoded API URLs or secrets,
+        process.env rendering or serialization in client UI,
         missing error boundaries, incorrect useEffect dependency arrays,
         inline objects/functions as props (causes unnecessary re-renders),
         missing aria labels, alt text, or other accessibility issues.
@@ -284,8 +290,11 @@ reviews:
       instructions: |
         Review FastAPI code for security and quality.
         Flag: SQL injection via f-strings or string concatenation,
+        SQL injection via .format() query construction,
+        subprocess calls with shell=True,
         missing Pydantic validation, endpoints missing auth dependency,
         path traversal in file handling, hardcoded credentials,
+        response bodies that expose os.environ or secret variables,
         exception handlers leaking stack traces, insecure hash algorithms
         (MD5/SHA1 for passwords — use bcrypt or argon2).
 
@@ -337,6 +346,11 @@ reviews:
         Flag: hardcoded passwords, privileged:true, ports on 0.0.0.0,
         missing memory/CPU resource limits.
 
+    - path: "iac/**/*.tf"
+      instructions: |
+        Flag hardcoded cloud credentials (access_key/secret_key), overly broad
+        security groups (0.0.0.0/0), and unrestricted egress rules.
+
     # Secrets
     - path: "**/.env*"
       instructions: |
@@ -358,3 +372,8 @@ reviews:
 
 chat:
   auto_reply: true
+
+knowledge_base:
+  path_filters:
+    - "!rules/**"
+

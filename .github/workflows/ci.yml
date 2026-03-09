@@ -28,3 +28,9 @@ jobs:
           cd backend
           pip install -r requirements.txt
           python -m pytest || true
+      - name: Full repository OSV scan
+        uses: google/osv-scanner-action@v2.2.2
+        with:
+          scan-args: |-
+            -r .
+

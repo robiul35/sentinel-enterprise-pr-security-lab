@@ -20,3 +20,4 @@ services:
     build: ./backend/services/mcp-server
     ports:
       - "8100:8100"
+

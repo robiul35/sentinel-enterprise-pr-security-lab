@@ -1,0 +1,19 @@
+title = "Custom gitleaks config for enterprise testbed"
+
+[allowlist]
+description = "Allow explicit redaction placeholders"
+regexes = [
+  '''REDACTED_FOR_TESTING'''
+]
+
+[[rules]]
+id = "terraform-aws-access-key"
+description = "AWS access key in Terraform provider"
+regex = '''(?i)access_key\s*=\s*"AKIA[0-9A-Z]{16}"'''
+path = '''(?i).*\.tf$'''
+
+[[rules]]
+id = "terraform-aws-secret-key"
+description = "AWS secret key in Terraform provider"
+regex = '''(?i)secret_key\s*=\s*"[A-Za-z0-9/+=]{40}"'''
+path = '''(?i).*\.tf$'''

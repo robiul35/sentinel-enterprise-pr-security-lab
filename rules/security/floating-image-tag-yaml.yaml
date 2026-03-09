@@ -1,0 +1,7 @@
+id: floating-image-tag-yaml
+language: yaml
+severity: warning
+message: |
+  Floating image tag detected. Pin image versions instead of using :latest.
+rule:
+  pattern: "image: $IMG:latest"

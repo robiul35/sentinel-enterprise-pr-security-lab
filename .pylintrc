@@ -1,0 +1,8 @@
+[MASTER]
+ignore=venv,.venv,node_modules
+
+[DESIGN]
+max-branches=7
+max-statements=20
+max-args=5
+max-locals=15
