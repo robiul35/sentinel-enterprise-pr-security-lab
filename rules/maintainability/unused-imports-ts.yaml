@@ -32,3 +32,4 @@ rule:
     import $IMPORT from $SOURCE
     $$$
     # No usage of $IMPORT found in the rest of the file
+

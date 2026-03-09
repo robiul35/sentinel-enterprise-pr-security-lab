@@ -1,0 +1,10 @@
+id: github-actions-tainted-bash-yaml
+language: yaml
+severity: error
+message: |
+  Tainted GitHub event input is executed in bash command.
+  Avoid using github.event.* directly in run scripts.
+rule:
+  any:
+    - pattern: "run: bash ${{ github.event.$FIELD }}"
+    - pattern: "run: sh ${{ github.event.$FIELD }}"

@@ -1,0 +1,10 @@
+id: sql-format-injection-python
+language: python
+severity: error
+message: |
+  SQL injection risk using Python string formatting before execute().
+  Use parameterized queries instead.
+rule:
+  any:
+    - pattern: $DB.execute($QUERY.format(...))
+    - pattern: $CUR.execute($QUERY.format(...))

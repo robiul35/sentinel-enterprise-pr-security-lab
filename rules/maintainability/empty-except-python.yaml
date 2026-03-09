@@ -36,3 +36,4 @@ rule:
             $$$
         except Exception:
             pass
+

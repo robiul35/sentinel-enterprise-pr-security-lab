@@ -14,3 +14,4 @@ rule:
         pattern: |
           def $FUNC($$$username$$$, $$$message$$$):
             $$$
+
