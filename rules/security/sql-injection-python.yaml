@@ -20,5 +20,8 @@ note: |
   ```
 
 rule:
-  pattern: cursor.execute($QUERY)
+  any:
+    - pattern: cursor.execute($QUERY)
+    - pattern: cur.execute($QUERY)
+    - pattern: $DB.execute($QUERY)
 
