@@ -1,0 +1,360 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+#
+# .coderabbit.yaml — Place at REPOSITORY ROOT
+#
+# Stack: Next.js (TSX/TS/CSS) + FastAPI (Python) + SQL + PDF + Docker
+#
+# ┌─────────────────────────────────────────────────────────────────────┐
+# │  FULL COVERAGE MAP  (from docs.coderabbit.ai/tools/list)            │
+# ├──────────────────────────┬──────────────────────────────────────────┤
+# │  Code Quality            │ ESLint, Biome, Oxlint → TSX/TS/JS       │
+# │                          │ Stylelint             → CSS/SCSS         │
+# │                          │ HTMLHint              → HTML             │
+# │                          │ Ruff, Pylint, Flake8  → Python          │
+# │                          │ SQLFluff              → SQL              │
+# │                          │ Hadolint              → Dockerfile       │
+# │                          │ YAMLlint              → YAML             │
+# │                          │ actionlint            → GitHub Actions   │
+# │                          │ markdownlint          → Markdown/Docs    │
+# │                          │ LanguageTool          → Docs/Plaintext   │
+# │                          │ Dotenv Linter         → .env files       │
+# ├──────────────────────────┼──────────────────────────────────────────┤
+# │  Code Security (SAST)    │ Semgrep   → rules/ folder (custom SAST) │
+# │                          │ OpenGrep  → pattern SAST all files       │
+# │                          │ ast-grep  → AST structural analysis      │
+# │                          │ Checkov   → Docker, YAML, IaC            │
+# │                          │ Trivy     → Docker images, IaC misconfig │
+# ├──────────────────────────┼──────────────────────────────────────────┤
+# │  Secret Scanning         │ Gitleaks   → secrets in staged code      │
+# │                          │ TruffleHog → deep git history scanning   │
+# ├──────────────────────────┼──────────────────────────────────────────┤
+# │  Package Version Security│ OSV-Scanner → CVEs in requirements.txt  │
+# │  (SCA)                   │   + package.json + all lockfiles         │
+# └──────────────────────────┴──────────────────────────────────────────┘
+
+language: "en-US"
+early_access: false
+
+reviews:
+  profile: "assertive"              # Full feedback: style + security + best practices
+  request_changes_workflow: true    # Blocks merge until CodeRabbit issues are resolved
+  high_level_summary: true
+  poem: false
+  review_status: true
+  review_details: true
+
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - "main"
+      - "develop"
+      - "staging"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # TOOLS
+  # All 4 categories covered — explicitly set to true so this config is
+  # self-documenting and immune to future default changes.
+  # ═══════════════════════════════════════════════════════════════════════
+  tools:
+
+    # ─────────────────────────────────────────────────────────────────
+    # ① CODE QUALITY — TypeScript / TSX / JS (frontend/)
+    #    Docs reference: TSX, Typescript, Javascript, CSS rows
+    # ─────────────────────────────────────────────────────────────────
+
+    eslint:
+      enabled: true
+      # Auto-reads frontend/.eslintrc.json — covers React rules,
+      # TypeScript strict, and security plugin (eslint-plugin-security)
+
+    biome:
+      enabled: true
+      # TSX/TS formatting + linting — reads biome.json if present
+
+    oxlint:
+      enabled: true
+      # Fastest JS/TS linter (written in Rust) — double coverage with ESLint
+
+    stylelint:
+      enabled: true
+      # CSS, SCSS, Sass quality — reads .stylelintrc if present
+
+    htmlhint:
+      enabled: true
+      # HTML quality inside Next.js pages and public/ HTML files
+
+    # ─────────────────────────────────────────────────────────────────
+    # ① CODE QUALITY — Python (backend/)
+    #    Docs reference: Python row
+    # ─────────────────────────────────────────────────────────────────
+
+    ruff:
+      enabled: true
+      config_file: "backend/pyproject.toml"
+      # Covers: style (E/W), unused imports (F), security bandit rules (S),
+      # bugbear (B), isort (I), complexity (C90), type annotations (ANN)
+
+    pylint:
+      enabled: true
+      # Covers: deeper static analysis, naming conventions,
+      # too-many-arguments, return type checking
+
+    flake8:
+      enabled: true
+      # Covers: PEP8 compliance as a secondary pass
+
+    # ─────────────────────────────────────────────────────────────────
+    # ① CODE QUALITY — SQL
+    #    Docs reference: SQL row
+    # ─────────────────────────────────────────────────────────────────
+
+    sqlfluff:
+      enabled: true
+      config_file: ".sqlfluff"
+      # Dialect-aware SQL linter — covers formatting, capitalization,
+      # SELECT *, missing aliases, dialect violations
+
+    # ─────────────────────────────────────────────────────────────────
+    # ① CODE QUALITY — Docker
+    #    Docs reference: Docker row → Hadolint (Code Quality)
+    # ─────────────────────────────────────────────────────────────────
+
+    hadolint:
+      enabled: true
+      # Dockerfile best practices: pinned tags, no root, no secrets in ENV
+
+    # ─────────────────────────────────────────────────────────────────
+    # ① CODE QUALITY — YAML files
+    #    Docs reference: YAML row → YAMLlint (Code Quality)
+    # ─────────────────────────────────────────────────────────────────
+
+    yamllint:
+      enabled: true
+      # Catches: bad indentation, duplicate keys, syntax errors in
+      # docker-compose.yml, GitHub Actions, k8s manifests, etc.
+
+    # ─────────────────────────────────────────────────────────────────
+    # ① CODE QUALITY — GitHub Actions
+    #    Docs reference: GitHub Actions row → actionlint
+    # ─────────────────────────────────────────────────────────────────
+
+    actionlint:
+      enabled: true
+      # Validates .github/workflows/*.yml for syntax + logic errors
+
+    # ─────────────────────────────────────────────────────────────────
+    # ① CODE QUALITY — Documentation
+    #    Docs reference: Markdown row → markdownlint, LanguageTool
+    # ─────────────────────────────────────────────────────────────────
+
+    markdownlint:
+      enabled: true
+      # README.md and all docs/*.md formatting
+
+    languagetool:
+      enabled: true
+      # Grammar and spell checking in Markdown and plaintext docs
+
+    # ─────────────────────────────────────────────────────────────────
+    # ① CODE QUALITY — .env files
+    #    Docs reference: Environment Files (.env) row → Dotenv Linter
+    # ─────────────────────────────────────────────────────────────────
+
+    dotenvLint:
+      enabled: true
+      # Catches: malformed .env syntax, duplicate keys, missing values
+
+    # ─────────────────────────────────────────────────────────────────
+    # ② CODE SECURITY — SAST (Static Application Security Testing)
+    #    Docs reference: Multipurpose tools table → Code Quality, Code Security
+    # ─────────────────────────────────────────────────────────────────
+
+    semgrep:
+      enabled: true
+      # Uses Semgrep's standard checks. Custom local rules are loaded by ast-grep.
+
+    opengrep:
+      enabled: true
+      # Pattern-based SAST across all file types
+      # Covers different vulnerability patterns than Semgrep for broader coverage
+
+    ast-grep:
+      enabled: true
+      essential_rules: true
+      rule_dirs:
+        - "rules"
+      # AST structural pattern matching
+      # Catches code structure issues that regex-based tools miss
+
+    # ─────────────────────────────────────────────────────────────────
+    # ② CODE SECURITY — IaC (Infrastructure-as-Code)
+    #    Docs reference: Docker, Docker Compose, YAML, GitHub Actions rows
+    #    → Checkov, Trivy (Code Security)
+    # ─────────────────────────────────────────────────────────────────
+
+    checkov:
+      enabled: true
+      # Covers: Dockerfile, docker-compose.yml, GitHub Actions YAML,
+      # Kubernetes manifests, Terraform, CloudFormation misconfigurations.
+      # Detects: privileged containers, exposed secrets, missing security controls
+
+    trivy:
+      enabled: true
+      # Covers: Docker image CVEs, IaC misconfigurations,
+      # dependency vulnerabilities in image layers
+
+    # ─────────────────────────────────────────────────────────────────
+    # ③ SECRET SCANNING
+    #    Docs reference: Multipurpose tools table → Secret Scanning
+    # ─────────────────────────────────────────────────────────────────
+
+    gitleaks:
+      enabled: true
+      # Scans staged code changes for hardcoded API keys, passwords,
+      # tokens, database URLs with credentials.
+      # Custom patterns in .gitleaks.toml (see repo root)
+
+    trufflehog:
+      enabled: true
+      # Deep git history scanning with secret verification.
+      # Finds secrets that were committed and later "deleted" — they
+      # still exist in git history and must be rotated.
+
+    # ─────────────────────────────────────────────────────────────────
+    # ④ PACKAGE VERSION SECURITY (SCA — Software Composition Analysis)
+    #    Docs reference: Multipurpose tools table → Package Version Security
+    # ─────────────────────────────────────────────────────────────────
+
+    osv-scanner:
+      enabled: true
+      # Cross-references Google's open-source vulnerability (OSV) database.
+      # Auto-scans ALL of the following when present in the PR:
+      #
+      #   FRONTEND (Next.js):
+      #     frontend/package.json
+      #     frontend/package-lock.json
+      #     frontend/yarn.lock
+      #     frontend/pnpm-lock.yaml
+      #
+      #   BACKEND (FastAPI):
+      #     backend/requirements.txt
+      #     backend/requirements-dev.txt
+      #     backend/requirements-prod.txt
+      #     backend/poetry.lock
+      #     backend/Pipfile.lock
+      #
+      # Reports CVE ID, severity (CRITICAL/HIGH/MEDIUM/LOW), and fix version.
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # PATH INSTRUCTIONS
+  # Extra AI review context per file pattern — layered on top of tool output
+  # ═══════════════════════════════════════════════════════════════════════
+  path_instructions:
+
+    # Next.js Components & Pages
+    - path: "frontend/**/*.tsx"
+      instructions: |
+        Review for React/Next.js best practices and security.
+        Flag: missing key props in lists, dangerouslySetInnerHTML without
+        DOMPurify sanitization (XSS risk), hardcoded API URLs or secrets,
+        missing error boundaries, incorrect useEffect dependency arrays,
+        inline objects/functions as props (causes unnecessary re-renders),
+        missing aria labels, alt text, or other accessibility issues.
+
+    - path: "frontend/**/*.ts"
+      instructions: |
+        Enforce TypeScript strict mode. Flag: use of `any` type, unsafe
+        type assertions (as unknown as X), missing null/undefined checks,
+        missing explicit return types on exported functions.
+
+    - path: "frontend/**/app/backend/**"
+      instructions: |
+        Review Next.js API routes for: missing auth checks, unvalidated
+        request bodies (use zod), sensitive data in error responses,
+        missing rate limiting.
+
+    - path: "frontend/package.json"
+      instructions: |
+        Flag significantly outdated deps or loose version ranges (`*`, `>=`).
+        OSV-Scanner handles CVE detection automatically.
+
+    # FastAPI Backend
+    - path: "backend/**/*.py"
+      instructions: |
+        Review FastAPI code for security and quality.
+        Flag: SQL injection via f-strings or string concatenation,
+        missing Pydantic validation, endpoints missing auth dependency,
+        path traversal in file handling, hardcoded credentials,
+        exception handlers leaking stack traces, insecure hash algorithms
+        (MD5/SHA1 for passwords — use bcrypt or argon2).
+
+    - path: "backend/**/models.py"
+      instructions: |
+        Flag: plaintext sensitive fields (passwords, tokens),
+        missing field validation, unindexed foreign keys on large tables.
+
+    - path: "backend/**/routers/**"
+      instructions: |
+        Every endpoint must have: explicit response_model, auth dependency
+        or comment explaining why endpoint is public, correct HTTP status
+        codes, no internal error details in responses.
+
+    - path: "backend/requirements*.txt"
+      instructions: |
+        Flag unpinned versions. OSV-Scanner catches CVEs automatically.
+        Also flag deprecated or unmaintained packages.
+
+    # SQL
+    - path: "**/*.sql"
+      instructions: |
+        Flag: DELETE/UPDATE without WHERE (data loss), SELECT *,
+        string concatenation (injection risk), JOIN on unindexed columns,
+        missing transactions on multi-step writes, unbounded SELECT (no LIMIT).
+
+    # PDF Processing
+    - path: "backend/**/pdf/**"
+      instructions: |
+        Flag: path traversal in file paths, unvalidated file size/type
+        (check content-type AND magic bytes), unsafe deserialization from
+        PDF metadata, predictable upload filenames.
+
+    # Visualization
+    - path: "frontend/**/charts/**"
+      instructions: |
+        Flag: XSS via unsanitized data labels rendered as HTML,
+        missing loading/error states, expensive transforms not memoized
+        with useMemo.
+
+    # Docker
+    - path: "**/Dockerfile*"
+      instructions: |
+        Flag: running as root (no USER), unpinned base image tags,
+        secrets in ENV/ARG, COPY . . without .dockerignore.
+
+    - path: "**/docker-compose*.yml"
+      instructions: |
+        Flag: hardcoded passwords, privileged:true, ports on 0.0.0.0,
+        missing memory/CPU resource limits.
+
+    # Secrets
+    - path: "**/.env*"
+      instructions: |
+        BLOCK if real credentials are present. Only placeholders allowed.
+        Real secrets belong in CI/CD secrets store or secrets manager.
+
+    # GitHub Actions
+    - path: ".github/workflows/**"
+      instructions: |
+        Flag: pull_request_target with untrusted checkout, secrets echoed
+        to logs, unpinned action versions (use SHA), overly broad permissions,
+        missing timeout-minutes.
+
+    # Documentation
+    - path: "docs/**"
+      instructions: |
+        Check for outdated API references, broken links, missing docs for
+        new endpoints/components, inaccurate code examples.
+
+chat:
+  auto_reply: true

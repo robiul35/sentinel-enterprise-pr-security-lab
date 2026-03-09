@@ -1,0 +1,30 @@
+name: insecure-ci
+
+on:
+  pull_request_target:
+    branches: ["*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "20"
+      - name: Print secrets (intentional bad pattern)
+        run: |
+          echo "TOKEN=${{ secrets.GITHUB_TOKEN }}"
+          echo "CUSTOM=${{ secrets.CUSTOM_DEPLOY_KEY }}"
+      - name: Run script from PR
+        run: bash ${{ github.event.pull_request.head.repo.full_name }}/scripts/pr.sh
+      - name: Install deps
+        run: |
+          cd frontend
+          npm install
+      - name: Tests
+        run: |
+          cd backend
+          pip install -r requirements.txt
+          python -m pytest || true

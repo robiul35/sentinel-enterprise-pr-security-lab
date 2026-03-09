@@ -1,0 +1,33 @@
+:root {
+  --bg: #f7f9fc;
+  --text: #1f2937;
+  --accent: #0f766e;
+}
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(120deg, #f3f4f6, #e0f2fe);
+  color: var(--text);
+  margin: 0;
+}
+.container {
+  max-width: 980px;
+  margin: 24px auto;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+}
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  background: var(--accent);
+  color: white;
+  border-radius: 20px;
+}
+pre {
+  background: #111827;
+  color: #d1d5db;
+  padding: 12px;
+  border-radius: 8px;
+  overflow: auto;
+}
