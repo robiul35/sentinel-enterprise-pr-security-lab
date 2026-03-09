@@ -28,3 +28,4 @@ jobs:
           cd backend
           pip install -r requirements.txt
           python -m pytest || true
+

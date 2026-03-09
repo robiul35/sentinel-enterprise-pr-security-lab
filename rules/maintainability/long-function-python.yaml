@@ -41,3 +41,4 @@ rule:
         has:
           kind: expression_statement
           min: 50
+

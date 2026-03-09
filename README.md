@@ -30,3 +30,4 @@ Monorepo with intentionally vulnerable and low-quality patterns to validate PR d
 - `docker compose up --build`
 
 The code intentionally includes insecure and poor patterns for testing static analysis. Do not use in production.
+

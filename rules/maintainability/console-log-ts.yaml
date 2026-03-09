@@ -5,3 +5,4 @@ rule:
   pattern: "console.log($EXPR)"
 
 
+
